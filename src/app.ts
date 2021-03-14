@@ -30,9 +30,9 @@ if (canvas && context) {
             const programComponent = new ProgramComponent(context, program);
             programComponent.setAttribute('u_resolution', [canvas.width, canvas.height]);
             programComponent.setAttribute('a_position', [
-              -1, 1,
-              0, 0.5,
-              0.7, 0,
+              10, 20,
+              60, 770,
+              450, 770,
             ]);
             const renderingService = new RenderingService(context, programComponent);
         }

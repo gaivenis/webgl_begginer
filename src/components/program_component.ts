@@ -12,14 +12,14 @@ export class ProgramComponent
 
     setAttribute(name: string, value: number[]): void
     {
-        const location = this.context.getAttribLocation(this.program, name);
-        const buffer = this.context.createBuffer();
-        this.context.bindBuffer(this.context.ARRAY_BUFFER, buffer);
-        this.context.bufferData(this.context.ARRAY_BUFFER, new Float32Array(value), this.context.STATIC_DRAW);
-        this.vertexData = this.context.createVertexArray();
-        this.context.bindVertexArray(this.vertexData)
-        this.context.enableVertexAttribArray(location);
-        this.context.vertexAttribPointer(location, 2, this.context.FLOAT, false, 0, 0);
-        console.log('rtrtr');
+        const { context, program } = this;
+        const location = context.getAttribLocation(program, name);
+        const buffer = context.createBuffer();
+        context.bindBuffer(context.ARRAY_BUFFER, buffer);
+        context.bufferData(context.ARRAY_BUFFER, new Float32Array(value), context.STATIC_DRAW);
+        this.vertexData = context.createVertexArray();
+        context.bindVertexArray(this.vertexData)
+        context.enableVertexAttribArray(location);
+        context.vertexAttribPointer(location, 2, context.FLOAT, false, 0, 0);
     }
 }

@@ -21,8 +21,11 @@ export class RenderingService
         context.clearColor(0, 0, 0, 0);
         context.clear(context.COLOR_BUFFER_BIT);
         context.useProgram(programComponent.program);
+        const location = context.getUniformLocation(programComponent.program, 'u_resolution');
+        context.uniform2f(location, context.canvas.width, context.canvas.height);
         context.drawArrays(context.TRIANGLES, 0, 3);
-
+        
+        
         // window.requestAnimationFrame(() => {
         //     programComponent.setAttribute('a_position', [
         //       UtilsService.randomTest(), UtilsService.randomTest(),
