@@ -11,8 +11,10 @@
       "moduleResolution": "node",
       "allowSyntheticDefaultImports": true,
       "typeRoots": [
-        "./global.d.ts"
-      ]
+        "./global.d.ts",
+        "node_modules/@types"
+      ],
+      "types": ["resize-observer-browser"],
     },
     "include": [
       "./src/**/*"

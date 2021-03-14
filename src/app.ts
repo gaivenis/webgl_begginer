@@ -8,6 +8,19 @@ import { UtilsService } from './services/utils_serlvice';
 
 const canvas = <HTMLCanvasElement>document.getElementById('glCanvas');
 const context = canvas.getContext('webgl2');
+
+const resizeObserver = new ResizeObserver(() => {
+  UtilsService.resizeCanvasToDispalySize(canvas);
+  context?.viewport(0, 0, canvas.width, canvas.height);
+});
+
+
+try {
+  resizeObserver.observe(canvas, {box: 'device-pixel-content-box'});
+} catch (ex) {
+  resizeObserver.observe(canvas, {box: 'content-box'});
+}
+
 if (canvas && context) {
     const vertexShader = ShaderService.create(context, context.VERTEX_SHADER, vertexSource);
     const fragmentShader = ShaderService.create(context, context.FRAGMENT_SHADER, fragmentSource);
@@ -15,17 +28,13 @@ if (canvas && context) {
         const program = ProgramService.create(context, vertexShader, fragmentShader);
         if (program) {
             const programComponent = new ProgramComponent(context, program);
-            new RenderingService(context, programComponent);
+            programComponent.setAttribute('u_resolution', [canvas.width, canvas.height]);
+            programComponent.setAttribute('a_position', [
+              -1, 1,
+              0, 0.5,
+              0.7, 0,
+            ]);
+            const renderingService = new RenderingService(context, programComponent);
         }
     }
-}
-
-const resizeObserver = new ResizeObserver(() => {
-    UtilsService.resizeCanvasToDispalySize(canvas);
-});
-
-try {
-  resizeObserver.observe(canvas, {box: 'device-pixel-content-box'});
-} catch (ex) {
-  resizeObserver.observe(canvas, {box: 'content-box'});
 }
