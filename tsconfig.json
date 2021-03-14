@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "outDir": "./dist/",
+      "noImplicitAny": true,
+      "module": "esnext",
+      "strict": true,
+      "strictNullChecks": true,
+      "target": "esnext",
+      "jsx": "react",
+      "allowJs": true,
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "typeRoots": [
+        "./global.d.ts"
+      ]
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  }
