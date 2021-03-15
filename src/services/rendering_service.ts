@@ -24,17 +24,31 @@ export class RenderingService
         const location = context.getUniformLocation(programComponent.program, 'u_resolution');
         context.uniform2f(location, context.canvas.width, context.canvas.height);
         context.drawArrays(context.TRIANGLES, 0, 3);
+        const colorLocation = context.getUniformLocation(programComponent.program, "u_color");
+
+        for (let ii = 0; ii < 300; ++ii) {
+            
+            programComponent.setAttribute('a_position', [
+                UtilsService.randomInt(context.canvas.width), UtilsService.randomInt(context.canvas.height),
+                UtilsService.randomInt(context.canvas.width), UtilsService.randomInt(context.canvas.height),
+                UtilsService.randomInt(context.canvas.width), UtilsService.randomInt(context.canvas.height),
+            ])
+            context.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
+            var primitiveType = context.TRIANGLES;
+            var offset = 0;
+            var count = 3;
+            context.drawArrays(primitiveType, offset, count);
+          }
         
+        window.requestAnimationFrame(() => {
+            // programComponent.setAttribute('a_position', [
+            //   UtilsService.randomTest(), UtilsService.randomTest(),
+            //   0, 0.5,
+            //   0.7, 0,
+            // ]);
         
-        // window.requestAnimationFrame(() => {
-        //     programComponent.setAttribute('a_position', [
-        //       UtilsService.randomTest(), UtilsService.randomTest(),
-        //       0, 0.5,
-        //       0.7, 0,
-        //     ]);
-        
-        //     this.draw();
-        //   });
+            this.draw();
+          });
     }
 
     setProgramComponent(programComponent: ProgramComponent)

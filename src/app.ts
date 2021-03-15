@@ -28,12 +28,12 @@ if (canvas && context) {
         const program = ProgramService.create(context, vertexShader, fragmentShader);
         if (program) {
             const programComponent = new ProgramComponent(context, program);
-            programComponent.setAttribute('u_resolution', [canvas.width, canvas.height]);
-            programComponent.setAttribute('a_position', [
-              10, 20,
-              60, 770,
-              450, 770,
-            ]);
+            // programComponent.setAttribute('u_resolution', [canvas.width, canvas.height]);
+            // programComponent.setAttribute('a_position', [
+            //   10, 20,
+            //   60, 770,
+            //   450, 770,
+            // ]);
             const renderingService = new RenderingService(context, programComponent);
         }
     }

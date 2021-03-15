@@ -19,4 +19,9 @@ export class UtilsService
     {
       return (Math.floor(Math.random() * 201) -100) / 100;
     }
+
+    static randomInt(range: number): number
+    {
+      return Math.floor(Math.random() * range);
+    }
 }
