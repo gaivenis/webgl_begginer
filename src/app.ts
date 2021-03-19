@@ -21,6 +21,10 @@ try {
   resizeObserver.observe(canvas, {box: 'content-box'});
 }
 
+console.log('eeee' + (Date.now()));
+let x = 100; 
+let y = 150;
+const step = 5;
 if (canvas && context) {
     const vertexShader = ShaderService.create(context, context.VERTEX_SHADER, vertexSource);
     const fragmentShader = ShaderService.create(context, context.FRAGMENT_SHADER, fragmentSource);
@@ -35,6 +39,29 @@ if (canvas && context) {
             //   450, 770,
             // ]);
             const renderingService = new RenderingService(context, programComponent);
+            window.addEventListener('keydown', (e: KeyboardEvent) => {
+				if (e.key === 'ArrowRight') {
+					x = x + step;
+				}
+
+				if (e.key === 'ArrowLeft') {
+					x = x - step;
+				}
+
+				if (e.key === 'ArrowDown') {
+					y = y + step;
+				}
+
+				if (e.key === 'ArrowUp') {
+					y = y - step;
+				}
+				renderingService.matrix = [
+					1, 0, 0,
+					0, 1, 0,
+					x, y, 1,
+				]
+				renderingService.draw();
+            });
         }
     }
 }
