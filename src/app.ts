@@ -22,8 +22,8 @@ try {
 }
 
 console.log('eeee' + (Date.now()));
-let x = 100; 
-let y = 150;
+let x = 0; 
+let y = 0;
 const step = 5;
 if (canvas && context) {
     const vertexShader = ShaderService.create(context, context.VERTEX_SHADER, vertexSource);
@@ -39,29 +39,29 @@ if (canvas && context) {
             //   450, 770,
             // ]);
             const renderingService = new RenderingService(context, programComponent);
-            window.addEventListener('keydown', (e: KeyboardEvent) => {
-				if (e.key === 'ArrowRight') {
-					x = x + step;
-				}
+            // window.addEventListener('keydown', (e: KeyboardEvent) => {
+			// 	if (e.key === 'ArrowRight') {
+			// 		x = x + step;
+			// 	}
 
-				if (e.key === 'ArrowLeft') {
-					x = x - step;
-				}
+			// 	if (e.key === 'ArrowLeft') {
+			// 		x = x - step;
+			// 	}
 
-				if (e.key === 'ArrowDown') {
-					y = y + step;
-				}
+			// 	if (e.key === 'ArrowDown') {
+			// 		y = y + step;
+			// 	}
 
-				if (e.key === 'ArrowUp') {
-					y = y - step;
-				}
-				renderingService.matrix = [
-					1, 0, 0,
-					0, 1, 0,
-					x, y, 1,
-				]
-				renderingService.draw();
-            });
+			// 	if (e.key === 'ArrowUp') {
+			// 		y = y - step;
+			// 	}
+			// 	renderingService.matrix = [
+			// 		1, 0, 0,
+			// 		0, 1, 0,
+			// 		x, y, 1,
+			// 	]
+			// 	renderingService.draw();
+            // });
         }
     }
 }
