@@ -1,3 +1,5 @@
+import { RenderingService } from './rendering_service';
+
 export class AnimationService
 {
     fps: number;
@@ -5,13 +7,15 @@ export class AnimationService
     animation: Function
     startTime: number = Date.now();
     fpsInterval: number;
+    renderingService: RenderingService;
     
-    constructor(fps: number, animation: Function, autoStart: boolean = false)
+    constructor(fps: number, animation: Function, autoStart: boolean = false, renderingService: RenderingService)
     {
         this.fps = fps;
         this.fpsInterval = 1000 / fps;
         this.animation = animation;
-        
+        this.renderingService = renderingService;
+
         if (autoStart) {
             this.animate();
         }
@@ -23,8 +27,10 @@ export class AnimationService
             return;
         }
         
-      
-
+        window.requestAnimationFrame(() => {
+            this.animate();
+        });
+        this.renderingService.draw();
         const nowTime = Date.now();
         const elapsed = nowTime - this.startTime;
 
@@ -32,9 +38,5 @@ export class AnimationService
             this.startTime = nowTime - (elapsed % this.fpsInterval);
             this.animation();
         }
-
-        window.requestAnimationFrame(() => {
-            this.animate();
-        });
     }
 }

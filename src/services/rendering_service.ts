@@ -51,7 +51,7 @@ export class RenderingService
         context.uniform2f(location, context.canvas.width, context.canvas.height);
         const matrixLocation = context.getUniformLocation(programComponent.program, 'u_matrix');
         context.uniformMatrix3fv(matrixLocation, false, this.matrix!);
-        // context.drawArrays(context.TRIANGLES, 0, 3);
+
         const colorLocation = context.getUniformLocation(programComponent.program, "u_color");
       
         for (let i = 0, length = this.snake.length; i < length; i++) {

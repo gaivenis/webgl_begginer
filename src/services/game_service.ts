@@ -16,7 +16,7 @@ type Coordinates = number[];
 
 export class GameService
 {
-    static readonly snakeLength: number = 100.0;
+    static readonly snakeLength: number = 5.0;
     static readonly snakePartSize: number = 10.0;
 
     movesList: MoveComponent[] = [];
@@ -66,22 +66,22 @@ export class GameService
             if (availableKeys.includes(e.key)) {
                 let move: MoveComponent | null = null;
                 const coordinates = [...this.snake.snakeHeadPart.coordinates];
-                if (e.key === Directions.right && this.currentDirection !== Directions.right) {
+                if (e.key === Directions.right && this.currentDirection !== Directions.right && this.currentDirection !== Directions.left) {
                     move = new MoveComponent(Directions.right, coordinates);
                     this.currentDirection = Directions.right;
                 }
 
-                if (e.key === Directions.left && this.currentDirection !== Directions.left) {
+                if (e.key === Directions.left && this.currentDirection !== Directions.left && this.currentDirection !== Directions.right) {
                     move = new MoveComponent(Directions.left, coordinates);
                     this.currentDirection = Directions.left;
                 }
 
-                if (e.key === Directions.down && this.currentDirection !== Directions.down) {
+                if (e.key === Directions.down && this.currentDirection !== Directions.down && this.currentDirection !== Directions.up) {
                     move = new MoveComponent(Directions.down, coordinates);
                     this.currentDirection = Directions.down;
                 }
 
-                if (e.key === Directions.up && this.currentDirection !== Directions.up) {
+                if (e.key === Directions.up && this.currentDirection !== Directions.up && this.currentDirection !== Directions.down) {
                     move = new MoveComponent(Directions.up, coordinates);
                     this.currentDirection = Directions.up;
                 }
@@ -94,10 +94,10 @@ export class GameService
             }
         });
         
-        this.animationService = new AnimationService(50, () => {
+        this.animationService = new AnimationService(20, () => {
             this._handleMoveBySquare();
-            this.renderingService.draw();
-        }, true);
+            this.renderingService.snake = this.snake;
+        }, true, this.renderingService);
     }
 
     protected _handleMoveBySquare()
@@ -109,7 +109,7 @@ export class GameService
         const lastSquare = this.snake.squares[length - 2];
         firstSquare!.coordinates = [...lastSquare.coordinates];
         firstSquare!.direction = this.currentDirection;
-        this.snake.move(length - 1);
+        
         collisionList.pop();
         if (this.isCollision(this.snake.snakeHeadPart, collisionList)) {
             this.animationService.stop = true;
@@ -117,9 +117,10 @@ export class GameService
                 document.getElementById('modal')!.style.display = 'block';
             }
         }
+        this.snake.move(length - 1);
     }
 
-    protected _handleMoves()
+    protected _handleByMoves()
     {
         let i = this.snake.length - 1;
         let removeMove: boolean = false;
@@ -144,6 +145,7 @@ export class GameService
             if (removeMove) {
                 this.movesList.shift();
             }
+
             collisionList.pop();
             if (this.isCollision(this.snake.snakeHeadPart, collisionList)) {
                 this.animationService.stop = true;
@@ -152,5 +154,10 @@ export class GameService
                 }
             }
         }
+    }
+
+    createApple()
+    {
+        
     }
 }

@@ -31,7 +31,7 @@ if (canvas && context) {
         const program = ProgramService.create(context, vertexShader, fragmentShader);
         if (program) {
             const programComponent = new ProgramComponent(context, program);
-			const snake = new SnakeComponent(GameService.snakeLength, GameService.snakePartSize)
+			const snake = new SnakeComponent(GameService.snakeLength, GameService.snakePartSize, context)
             const renderingService = new RenderingService(context, programComponent, snake);
 			const gameService = new GameService(renderingService, snake);
         }
