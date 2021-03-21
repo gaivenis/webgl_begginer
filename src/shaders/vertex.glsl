@@ -1,10 +1,9 @@
 #version 300 es
 in vec2 a_position;
 uniform vec2 u_resolution;
-uniform mat3 u_matrix;
 
 void main() {
-   vec2 position = (u_matrix * vec3(a_position, 1)).xy;
+   vec2 position = vec3(a_position, 1).xy;
 
   // convert the position from pixels to 0.0 to 1.0
   vec2 zeroToOne = position / u_resolution;

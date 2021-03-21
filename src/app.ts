@@ -7,6 +7,7 @@ import { ProgramComponent } from './components/program_component';
 import { UtilsService } from './services/utils_serlvice';
 import { GameService } from './services/game_service';
 import { SnakeComponent } from './components/snake_component';
+import { DialogComponent } from './components/dialog_component';
 
 const canvas = <HTMLCanvasElement>document.getElementById('glCanvas');
 const context = canvas.getContext('webgl2');
@@ -69,3 +70,5 @@ if (canvas && context) {
         }
     }
 }
+
+new DialogComponent();

@@ -16,7 +16,7 @@ type Coordinates = number[];
 
 export class GameService
 {
-    static readonly snakeLength: number = 10.0;
+    static readonly snakeLength: number = 50.0;
     static readonly snakePartSize: number = 10.0;
 
     movesList: MoveComponent[] = [];
@@ -89,11 +89,10 @@ export class GameService
                 }
                 
                 this.renderingService.snake = this.snake;
-                console.log(this.movesList)
             }
         });
         
-        this.animationService = new AnimationService(20, () => {
+        this.animationService = new AnimationService(50, () => {
             this._handleMoves();
             this.renderingService.draw();
         }, true);
@@ -122,6 +121,9 @@ export class GameService
             
             if (this.isCollision(this.snake.snakeHeadPart, collisionList)) {
                 this.animationService.stop = true;
+                if (document.getElementById('modal')) {
+                    document.getElementById('modal')!.style.display = 'block';
+                }
             }
         }
     }
