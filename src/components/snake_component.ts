@@ -99,7 +99,6 @@ export class SnakeComponent
         square.coordinates[8] = square.coordinates[8] - this.squareSize;
         square.coordinates[10] = square.coordinates[10] - this.squareSize;
         if (square.coordinates[0] < 0) {
-            console.log(0);
             square.coordinates[0] = canvasWidth - square.coordinates[0];
             square.coordinates[2] = canvasWidth - square.coordinates[2];
             square.coordinates[4] = canvasWidth - square.coordinates[4];
