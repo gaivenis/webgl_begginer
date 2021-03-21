@@ -49,75 +49,19 @@ export class RenderingService
         context.useProgram(programComponent.program);
         const location = context.getUniformLocation(programComponent.program, 'u_resolution');
         context.uniform2f(location, context.canvas.width, context.canvas.height);
-        // const matrixLocation = context.getUniformLocation(programComponent.program, 'u_matrix');
-        // context.uniformMatrix3fv(matrixLocation, false, this.matrix!);
+        const matrixLocation = context.getUniformLocation(programComponent.program, 'u_matrix');
+        context.uniformMatrix3fv(matrixLocation, false, this.matrix!);
         // context.drawArrays(context.TRIANGLES, 0, 3);
         const colorLocation = context.getUniformLocation(programComponent.program, "u_color");
-        context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
-        // for (let ii = 0; ii < 300; ++ii) {
-            for (let i = 0, length = this.snake.length; i < length; i++) {
-                programComponent.setAttribute('a_position', this.snake.squares[i].coordinates);
-                
-                var primitiveType = context.TRIANGLES;
-                var offset = 0;
-                var count = 6;
-                context.drawArrays(primitiveType, offset, count);
-            }
-            
-
-            
-
-            // programComponent.setAttribute('a_position', [
-            //     0.0, 0.0,
-            //     0.0, squereSize,
-            //     squereSize, squereSize,
-            //     0.0, 0.0,
-            //     squereSize, 0.0,
-            //     squereSize, squereSize,
-            // ]);
-
-            // context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
-            // var primitiveType = context.TRIANGLE_FAN;
-            // var offset = 0;
-            // var count = 6;
-            // context.drawArrays(primitiveType, offset, count);
-
-            // programComponent.setAttribute('a_position', [
-            //     0.0, 0.0,
-            //     30.0, 0.0,
-            //     30.0, 30.0,
-            // ]);
-
-            // const matrix2Location = context.getUniformLocation(programComponent.program, 'u_matrix');
-            // context.uniformMatrix3fv(matrix2Location, false, [
-            //     1, 0, 0,
-            //     0, 1, 0,
-            //     100, 150, 1,
-            // ]);
-
-
-            // programComponent.setAttribute('a_position', [
-            //     200, 140,
-            //     100.7, 200.5,
-            //     35.0, 180.7,
-            // ])
-            // context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
-            // var primitiveType = context.TRIANGLES;
-            // var offset = 0;
-            // var count = 3;
-            // context.drawArrays(primitiveType, offset, count);
-        //   }
-        
-
-        // window.requestAnimationFrame(() => {
-        //     // programComponent.setAttribute('a_position', [
-        //     //   UtilsService.randomTest(), UtilsService.randomTest(),
-        //     //   0, 0.5,
-        //     //   0.7, 0,
-        //     // ]);
-        
-        //     this.draw();
-        //   });
+      
+        for (let i = 0, length = this.snake.length; i < length; i++) {
+            programComponent.setAttribute('a_position', this.snake.squares[i].coordinates);
+            context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
+            var primitiveType = context.TRIANGLES;
+            var offset = 0;
+            var count = 6;
+            context.drawArrays(primitiveType, offset, count);
+        }
     }
 
     setProgramComponent(programComponent: ProgramComponent)
