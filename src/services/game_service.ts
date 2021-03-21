@@ -95,9 +95,28 @@ export class GameService
         });
         
         this.animationService = new AnimationService(50, () => {
-            this._handleMoves();
+            this._handleMoveBySquare();
             this.renderingService.draw();
         }, true);
+    }
+
+    protected _handleMoveBySquare()
+    {
+        const firstSquare = this.snake.squares.shift();
+        const collisionList = [...this.snake.squares];
+        this.snake.squares.push(firstSquare!)
+        let length = this.snake.squares.length;
+        const lastSquare = this.snake.squares[length - 2];
+        firstSquare!.coordinates = [...lastSquare.coordinates];
+        firstSquare!.direction = this.currentDirection;
+        this.snake.move(length - 1);
+        collisionList.pop();
+        if (this.isCollision(this.snake.snakeHeadPart, collisionList)) {
+            this.animationService.stop = true;
+            if (document.getElementById('modal')) {
+                document.getElementById('modal')!.style.display = 'block';
+            }
+        }
     }
 
     protected _handleMoves()
