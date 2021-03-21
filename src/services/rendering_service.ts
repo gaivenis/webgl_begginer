@@ -15,8 +15,6 @@ export class RenderingService
         0, 1, 0,
         0, 0, 1,
     ];
-   
-    directionsList?: [];
 
     public get x(): number
     {
@@ -28,11 +26,11 @@ export class RenderingService
         return this.matrix[7];
     }
 
-    constructor(context: WebGL2RenderingContext, program: ProgramComponent)
+    constructor(context: WebGL2RenderingContext, program: ProgramComponent, snake: SnakeComponent)
     {
         this.context = context;
         this.programComponent = program;
-        this.snake = new SnakeComponent(10, 10);
+        this.snake = snake;
         this.draw();
     }
 
@@ -57,8 +55,8 @@ export class RenderingService
         const colorLocation = context.getUniformLocation(programComponent.program, "u_color");
         
         // for (let ii = 0; ii < 300; ++ii) {
-            for (let i = 0, length = this.snake.parts.length; i < length; i++) {
-                programComponent.setAttribute('a_position', this.snake.parts[i]);
+            for (let i = 0, length = this.snake.length; i < length; i++) {
+                programComponent.setAttribute('a_position', this.snake.squares[i].coordinates);
                 context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
                 var primitiveType = context.TRIANGLES;
                 var offset = 0;

@@ -5,6 +5,8 @@ import { ShaderService } from './services/shader_service';
 import { ProgramService } from './services/program_service';
 import { ProgramComponent } from './components/program_component';
 import { UtilsService } from './services/utils_serlvice';
+import { GameService } from './services/game_service';
+import { SnakeComponent } from './components/snake_component';
 
 const canvas = <HTMLCanvasElement>document.getElementById('glCanvas');
 const context = canvas.getContext('webgl2');
@@ -38,7 +40,9 @@ if (canvas && context) {
             //   60, 770,
             //   450, 770,
             // ]);
-            const renderingService = new RenderingService(context, programComponent);
+			const snake = new SnakeComponent(GameService.snakeLength, GameService.snakePartSize)
+            const renderingService = new RenderingService(context, programComponent, snake);
+			const gameService = new GameService(renderingService, snake);
             // window.addEventListener('keydown', (e: KeyboardEvent) => {
 			// 	if (e.key === 'ArrowRight') {
 			// 		x = x + step;
