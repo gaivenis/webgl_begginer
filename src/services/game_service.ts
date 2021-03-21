@@ -16,7 +16,7 @@ type Coordinates = number[];
 
 export class GameService
 {
-    static readonly snakeLength: number = 50.0;
+    static readonly snakeLength: number = 100.0;
     static readonly snakePartSize: number = 10.0;
 
     movesList: MoveComponent[] = [];
@@ -101,24 +101,28 @@ export class GameService
     protected _handleMoves()
     {
         let i = this.snake.length - 1;
+        let removeMove: boolean = false;
         const movesLength = this.movesList.length;
         const collisionList = [...this.snake.squares];
 
-        for (i; i > -1; i--) {
+        for (i = 0; i < GameService.snakeLength; i++) {
             const square = this.snake.squares[i];
             for (let moveI = 0; moveI < movesLength; moveI++) {
+                removeMove = false;
                 const move = this.movesList[moveI];
                 if (move && UtilsService.isArraysEqual(move.coordinates, square.coordinates)) {
                     square.direction = move.direction;
                     if (i === 0 && moveI === 0) {
-                        this.movesList.shift();
+                       removeMove = true;
                     }
                 }
             }
             
             this.snake.move(i);
+            if (removeMove) {
+                this.movesList.shift();
+            }
             collisionList.pop();
-            
             if (this.isCollision(this.snake.snakeHeadPart, collisionList)) {
                 this.animationService.stop = true;
                 if (document.getElementById('modal')) {
