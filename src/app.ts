@@ -24,10 +24,6 @@ try {
   resizeObserver.observe(canvas, {box: 'content-box'});
 }
 
-console.log('eeee' + (Date.now()));
-let x = 0; 
-let y = 0;
-const step = 5;
 if (canvas && context) {
     const vertexShader = ShaderService.create(context, context.VERTEX_SHADER, vertexSource);
     const fragmentShader = ShaderService.create(context, context.FRAGMENT_SHADER, fragmentSource);
@@ -35,38 +31,9 @@ if (canvas && context) {
         const program = ProgramService.create(context, vertexShader, fragmentShader);
         if (program) {
             const programComponent = new ProgramComponent(context, program);
-            // programComponent.setAttribute('u_resolution', [canvas.width, canvas.height]);
-            // programComponent.setAttribute('a_position', [
-            //   10, 20,
-            //   60, 770,
-            //   450, 770,
-            // ]);
 			const snake = new SnakeComponent(GameService.snakeLength, GameService.snakePartSize)
             const renderingService = new RenderingService(context, programComponent, snake);
 			const gameService = new GameService(renderingService, snake);
-            // window.addEventListener('keydown', (e: KeyboardEvent) => {
-			// 	if (e.key === 'ArrowRight') {
-			// 		x = x + step;
-			// 	}
-
-			// 	if (e.key === 'ArrowLeft') {
-			// 		x = x - step;
-			// 	}
-
-			// 	if (e.key === 'ArrowDown') {
-			// 		y = y + step;
-			// 	}
-
-			// 	if (e.key === 'ArrowUp') {
-			// 		y = y - step;
-			// 	}
-			// 	renderingService.matrix = [
-			// 		1, 0, 0,
-			// 		0, 1, 0,
-			// 		x, y, 1,
-			// 	]
-			// 	renderingService.draw();
-            // });
         }
     }
 }

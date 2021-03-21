@@ -46,11 +46,13 @@ export class GameService
 
     isCollision(square: SnakeSquareComponent, squareList: SnakeSquareComponent[]): boolean
     {
-        const squareCoordinates = square.coordinates;
-
         for (let i = 0, length = squareList.length; i < length; i++) {
-            const squareComponent = squareList[i]; 
-            if (UtilsService.isArraysEqual(squareComponent.coordinates, squareCoordinates)) {
+            const squareComponent = squareList[i];
+            const dx = squareComponent.x - square.x;
+            const dy = squareComponent.y - square.y;
+            const hypotenuse = Math.sqrt(dx * dx + dy * dy);
+
+            if (hypotenuse < GameService.snakePartSize) {
                 return true;
             }
         }
@@ -110,7 +112,8 @@ export class GameService
             for (let moveI = 0; moveI < movesLength; moveI++) {
                 removeMove = false;
                 const move = this.movesList[moveI];
-                if (move && UtilsService.isArraysEqual(move.coordinates, square.coordinates)) {
+                
+                if (move && this.isCollision(square, [move])) {
                     square.direction = move.direction;
                     if (i === 0 && moveI === 0) {
                        removeMove = true;

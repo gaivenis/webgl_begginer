@@ -26,6 +26,8 @@ export class SnakeComponent
         square.coordinates[7] = square.coordinates[7] + this.squareSize;
         square.coordinates[9] = square.coordinates[9] + this.squareSize;
         square.coordinates[11] = square.coordinates[11] + this.squareSize;
+        square.x = square.coordinates[0];
+        square.y = square.coordinates[1];
         this.squares[index] = square;
     }
 
@@ -38,6 +40,8 @@ export class SnakeComponent
         square.coordinates[7] = square.coordinates[7] - this.squareSize;
         square.coordinates[9] = square.coordinates[9] - this.squareSize;
         square.coordinates[11] = square.coordinates[11] - this.squareSize;
+        square.x = square.coordinates[0];
+        square.y = square.coordinates[1];
         this.squares[index] = square;
     }
 
@@ -50,6 +54,8 @@ export class SnakeComponent
         square.coordinates[6] = square.coordinates[6] + this.squareSize;
         square.coordinates[8] = square.coordinates[8] + this.squareSize;
         square.coordinates[10] = square.coordinates[10] + this.squareSize;
+        square.x = square.coordinates[0];
+        square.y = square.coordinates[1];
         this.squares[index] = square;
     }
 
@@ -62,6 +68,8 @@ export class SnakeComponent
         square.coordinates[6] = square.coordinates[6] - this.squareSize;
         square.coordinates[8] = square.coordinates[8] - this.squareSize;
         square.coordinates[10] = square.coordinates[10] - this.squareSize;
+        square.x = square.coordinates[0];
+        square.y = square.coordinates[1];
         this.squares[index] = square;
     }
 
