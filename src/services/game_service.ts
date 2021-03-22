@@ -25,6 +25,7 @@ export class GameService
     currentDirection: Directions;
     animationService!: AnimationService;
     context: WebGL2RenderingContext;
+    isMoveAvailable: boolean = true;
 
     constructor(renderingService: RenderingService, snake: SnakeComponent, context: WebGL2RenderingContext)
     {
@@ -52,8 +53,8 @@ export class GameService
     {
         for (let i = 0, length = squareList.length; i < length; i++) {
             const squareComponent = squareList[i];
-            const dx = squareComponent.x - square.x;
-            const dy = squareComponent.y - square.y;
+            const dx = (squareComponent.x + 5) - (square.x + 5);
+            const dy = (squareComponent.y + 5) - (square.y + 5);
             const hypotenuse = Math.sqrt(dx * dx + dy * dy);
 
             if (hypotenuse < GameService.snakePartSize / 2) {
@@ -82,41 +83,44 @@ export class GameService
 
     protected _bindEvents()
     {
+        
         window.addEventListener('keydown', (e: KeyboardEvent) => {
             if (availableKeys.includes(e.key)) {
-                let move: MoveComponent | null = null;
-                const coordinates = [...this.snake.snakeHeadPart.coordinates];
-                if (e.key === Directions.right && this.currentDirection !== Directions.right && this.currentDirection !== Directions.left) {
-                    move = new MoveComponent(Directions.right, coordinates);
-                    this.currentDirection = Directions.right;
+                if (this.isMoveAvailable) {
+                    this.isMoveAvailable = false;
+                    let move: MoveComponent | null = null;
+                    const coordinates = [...this.snake.snakeHeadPart.coordinates];
+                    if (e.key === Directions.right && this.currentDirection !== Directions.right && this.currentDirection !== Directions.left) {
+                        move = new MoveComponent(Directions.right, coordinates);
+                        this.currentDirection = Directions.right;
+                    }
+    
+                    if (e.key === Directions.left && this.currentDirection !== Directions.left && this.currentDirection !== Directions.right) {
+                        move = new MoveComponent(Directions.left, coordinates);
+                        this.currentDirection = Directions.left;
+                    }
+    
+                    if (e.key === Directions.down && this.currentDirection !== Directions.down && this.currentDirection !== Directions.up) {
+                        move = new MoveComponent(Directions.down, coordinates);
+                        this.currentDirection = Directions.down;
+                    }
+    
+                    if (e.key === Directions.up && this.currentDirection !== Directions.up && this.currentDirection !== Directions.down) {
+                        move = new MoveComponent(Directions.up, coordinates);
+                        this.currentDirection = Directions.up;
+                    }
+    
+                    if (move) {
+                        this.movesList.push(move);
+                    }
                 }
-
-                if (e.key === Directions.left && this.currentDirection !== Directions.left && this.currentDirection !== Directions.right) {
-                    move = new MoveComponent(Directions.left, coordinates);
-                    this.currentDirection = Directions.left;
-                }
-
-                if (e.key === Directions.down && this.currentDirection !== Directions.down && this.currentDirection !== Directions.up) {
-                    move = new MoveComponent(Directions.down, coordinates);
-                    this.currentDirection = Directions.down;
-                }
-
-                if (e.key === Directions.up && this.currentDirection !== Directions.up && this.currentDirection !== Directions.down) {
-                    move = new MoveComponent(Directions.up, coordinates);
-                    this.currentDirection = Directions.up;
-                }
-
-                if (move) {
-                    this.movesList.push(move);
-                }
-                
-                this.renderingService.snake = this.snake;
             }
         });
         
         this.animationService = new AnimationService(30, () => {
             this._handleMoveBySquare();
             this.renderingService.snake = this.snake;
+            this.isMoveAvailable = true;
         }, true, this.renderingService);
     }
 

@@ -92,6 +92,7 @@ export class SnakeComponent
     {
         const square = this.squares[index];
         const canvasWidth = this.context.canvas.width;
+\
         square.coordinates[0] = square.coordinates[0] - this.squareSize;
         square.coordinates[2] = square.coordinates[2] - this.squareSize;
         square.coordinates[4] = square.coordinates[4] - this.squareSize;
