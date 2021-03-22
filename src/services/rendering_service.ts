@@ -10,6 +10,7 @@ export class RenderingService
     context: WebGL2RenderingContext;
     programComponent: ProgramComponent;
     snake: SnakeComponent;
+    target: number[] = [];
     matrix: number[] = [
         1, 0, 0,
         0, 1, 0,
@@ -42,16 +43,11 @@ export class RenderingService
     draw()
     {
         const { context, programComponent } = this;
-        UtilsService.resizeCanvasToDispalySize(<HTMLCanvasElement>context.canvas);
-        context.viewport(0, 0, context.canvas.width, context.canvas.height);
         context.clearColor(0, 0, 0, 0);
         context.clear(context.COLOR_BUFFER_BIT);
         context.useProgram(programComponent.program);
         const location = context.getUniformLocation(programComponent.program, 'u_resolution');
         context.uniform2f(location, context.canvas.width, context.canvas.height);
-        const matrixLocation = context.getUniformLocation(programComponent.program, 'u_matrix');
-        context.uniformMatrix3fv(matrixLocation, false, this.matrix!);
-
         const colorLocation = context.getUniformLocation(programComponent.program, "u_color");
         
         const coordinates: number[] = [];
@@ -62,6 +58,10 @@ export class RenderingService
         programComponent.setAttribute('a_position', coordinates);
         context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
         context.drawArrays(context.TRIANGLES, 0, 6 * this.snake.squares.length);
+
+        programComponent.setAttribute('a_position', this.target);
+        context.uniform4f(colorLocation, 0.2, 0.5, 0.7, 1);
+        context.drawArrays(context.TRIANGLES, 0, 6);
     }
 
     setProgramComponent(programComponent: ProgramComponent)

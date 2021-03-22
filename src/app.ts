@@ -12,18 +12,6 @@ import { DialogComponent } from './components/dialog_component';
 const canvas = <HTMLCanvasElement>document.getElementById('glCanvas');
 const context = canvas.getContext('webgl2');
 
-const resizeObserver = new ResizeObserver(() => {
-  UtilsService.resizeCanvasToDispalySize(canvas);
-  context?.viewport(0, 0, canvas.width, canvas.height);
-});
-
-
-try {
-  resizeObserver.observe(canvas, {box: 'device-pixel-content-box'});
-} catch (ex) {
-  resizeObserver.observe(canvas, {box: 'content-box'});
-}
-
 if (canvas && context) {
     const vertexShader = ShaderService.create(context, context.VERTEX_SHADER, vertexSource);
     const fragmentShader = ShaderService.create(context, context.FRAGMENT_SHADER, fragmentSource);
@@ -31,9 +19,9 @@ if (canvas && context) {
         const program = ProgramService.create(context, vertexShader, fragmentShader);
         if (program) {
             const programComponent = new ProgramComponent(context, program);
-			const snake = new SnakeComponent(GameService.snakeLength, GameService.snakePartSize, context)
+			      const snake = new SnakeComponent(GameService.snakeLength, GameService.snakePartSize, context)
             const renderingService = new RenderingService(context, programComponent, snake);
-			const gameService = new GameService(renderingService, snake);
+            new GameService(renderingService, snake, context);
         }
     }
 }

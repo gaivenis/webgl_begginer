@@ -16,7 +16,7 @@ type Coordinates = number[];
 
 export class GameService
 {
-    static readonly snakeLength: number = 5;
+    static readonly snakeLength: number = 3;
     static readonly snakePartSize: number = 10.0;
 
     movesList: MoveComponent[] = [];
@@ -24,12 +24,16 @@ export class GameService
     renderingService: RenderingService;
     currentDirection: Directions;
     animationService!: AnimationService;
-    
-    constructor(renderingService: RenderingService, snake: SnakeComponent)
+    context: WebGL2RenderingContext;
+
+    constructor(renderingService: RenderingService, snake: SnakeComponent, context: WebGL2RenderingContext)
     {
         this.renderingService = renderingService;
         this.snake = snake;
+        this.context = context;
+        this._initGameSize();
         this.currentDirection = this.snake.direction;
+        this.renderingService.target = this._generateTarget();
         this._bindEvents();
     }
 
@@ -52,12 +56,28 @@ export class GameService
             const dy = squareComponent.y - square.y;
             const hypotenuse = Math.sqrt(dx * dx + dy * dy);
 
-            if (hypotenuse < GameService.snakePartSize) {
+            if (hypotenuse < GameService.snakePartSize / 2) {
                 return true;
             }
         }
         
         return false;
+    }
+
+    protected _initGameSize()
+    {
+        const canvas = <HTMLCanvasElement>this.context.canvas;
+        const resizeObserver = new ResizeObserver(() => {
+            canvas.width = Math.floor(window.innerWidth / 10) * 10;
+            canvas.height = Math.floor(window.innerHeight / 10) * 10;
+            this.context?.viewport(0, 0, canvas.width, canvas.height);
+        });
+
+        try {
+            resizeObserver.observe(canvas, {box: 'device-pixel-content-box'});
+        } catch (ex) {
+            resizeObserver.observe(canvas, {box: 'content-box'});
+        }
     }
 
     protected _bindEvents()
@@ -100,8 +120,32 @@ export class GameService
         }, true, this.renderingService);
     }
 
+    protected _generateTarget()
+    {
+        const x = UtilsService.randomInt(Math.floor(window.innerWidth / 10)) * 10;
+        const y = UtilsService.randomInt(Math.floor(window.innerHeight / 10)) * 10;
+        console.log(x, y);
+        const vertices = [
+            x, y,
+            x, y + GameService.snakePartSize,
+            x + GameService.snakePartSize, y,
+
+            x + GameService.snakePartSize, y + GameService.snakePartSize,
+            x + GameService.snakePartSize, y,
+            x, y + GameService.snakePartSize
+        ]
+
+        return vertices;
+    }
+
     protected _handleMoveBySquare()
     {
+        const snakeTarget = new SnakeSquareComponent(this.renderingService.target);
+        if (this.isCollision(this.snake.squares[this.snake.squares.length - 2], [snakeTarget])) {
+            this._handleTargetCollision();
+            this.renderingService.target = this._generateTarget();
+        }
+
         const firstSquare = this.snake.squares.shift();
         const collisionList = [...this.snake.squares];
         this.snake.squares.push(firstSquare!)
@@ -111,13 +155,42 @@ export class GameService
         firstSquare!.direction = this.currentDirection;
         
         collisionList.pop();
-        if (this.isCollision(this.snake.snakeHeadPart, collisionList)) {
+
+        if (this.isCollision(lastSquare, collisionList)) {
             this.animationService.stop = true;
             if (document.getElementById('modal')) {
                 document.getElementById('modal')!.style.display = 'block';
             }
         }
+
         this.snake.move(length - 1);
+    }
+
+    protected _handleTargetCollision()
+    {
+        const firstSquare = this.snake.squares[0];
+        const coordinates = [...firstSquare.coordinates];
+
+        if (firstSquare.direction === Directions.down) {
+            coordinates[1] = coordinates[1] + GameService.snakePartSize;
+            coordinates[3] = coordinates[3] + GameService.snakePartSize;
+            coordinates[5] = coordinates[5] + GameService.snakePartSize;
+            coordinates[7] = coordinates[7] + GameService.snakePartSize;
+            coordinates[9] = coordinates[9] + GameService.snakePartSize;
+            coordinates[11] = coordinates[11] + GameService.snakePartSize;
+        }
+
+        if (firstSquare.direction === Directions.up) {
+            coordinates[1] = coordinates[1] - GameService.snakePartSize;
+            coordinates[3] = coordinates[3] - GameService.snakePartSize;
+            coordinates[5] = coordinates[5] - GameService.snakePartSize;
+            coordinates[7] = coordinates[7] - GameService.snakePartSize;
+            coordinates[9] = coordinates[9] - GameService.snakePartSize;
+            coordinates[11] = coordinates[11] - GameService.snakePartSize;
+        }
+
+        this.snake.squares.splice(1, 0, new SnakeSquareComponent(coordinates));
+        this.snake.length++;
     }
 
     protected _handleByMoves()
@@ -152,6 +225,12 @@ export class GameService
                 if (document.getElementById('modal')) {
                     document.getElementById('modal')!.style.display = 'block';
                 }
+            }
+
+            const snakeTarget = new SnakeSquareComponent(this.renderingService.target);
+            if (this.isCollision(this.snake.squares[this.snake.squares.length - 2], [snakeTarget])) {
+                this._handleTargetCollision();
+                this.renderingService.target = this._generateTarget();
             }
         }
     }

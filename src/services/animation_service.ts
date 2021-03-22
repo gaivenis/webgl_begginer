@@ -15,7 +15,7 @@ export class AnimationService
         this.fpsInterval = 1000 / fps;
         this.animation = animation;
         this.renderingService = renderingService;
-
+        
         if (autoStart) {
             this.animate();
         }
@@ -26,12 +26,13 @@ export class AnimationService
         if (this.stop) {
             return;
         }
-        
+                
         window.requestAnimationFrame(() => {
+            this.renderingService.draw();
             this.animate();
         });
-        
-        this.renderingService.draw();
+     
+
         const nowTime = Date.now();
         const elapsed = nowTime - this.startTime;
 
