@@ -16,7 +16,7 @@ type Coordinates = number[];
 
 export class GameService
 {
-    static readonly snakeLength: number = 20.0;
+    static readonly snakeLength: number = 5;
     static readonly snakePartSize: number = 10.0;
 
     movesList: MoveComponent[] = [];
@@ -94,7 +94,7 @@ export class GameService
             }
         });
         
-        this.animationService = new AnimationService(20, () => {
+        this.animationService = new AnimationService(30, () => {
             this._handleMoveBySquare();
             this.renderingService.snake = this.snake;
         }, true, this.renderingService);

@@ -53,15 +53,15 @@ export class RenderingService
         context.uniformMatrix3fv(matrixLocation, false, this.matrix!);
 
         const colorLocation = context.getUniformLocation(programComponent.program, "u_color");
-      
-        for (let i = 0, length = this.snake.length; i < length; i++) {
-            programComponent.setAttribute('a_position', this.snake.squares[i].coordinates);
-            context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
-            var primitiveType = context.TRIANGLES;
-            var offset = 0;
-            var count = 6;
-            context.drawArrays(primitiveType, offset, count);
+        
+        const coordinates: number[] = [];
+        for (let i = 0, length = this.snake.squares.length; i < length; i++) {
+            coordinates.push(...this.snake.squares[i].coordinates)
         }
+
+        programComponent.setAttribute('a_position', coordinates);
+        context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
+        context.drawArrays(context.TRIANGLES, 0, 6 * this.snake.squares.length);
     }
 
     setProgramComponent(programComponent: ProgramComponent)
