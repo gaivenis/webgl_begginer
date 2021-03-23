@@ -29,6 +29,7 @@ export class SnakeComponent
         square.coordinates[7] = square.coordinates[7] + this.squareSize;
         square.coordinates[9] = square.coordinates[9] + this.squareSize;
         square.coordinates[11] = square.coordinates[11] + this.squareSize;
+
         if (square.coordinates[7] > canvasHeight) {
             square.coordinates[1] = square.coordinates[1] - canvasHeight;
             square.coordinates[3] = square.coordinates[3] - canvasHeight;
@@ -37,6 +38,16 @@ export class SnakeComponent
             square.coordinates[9] = square.coordinates[9] - canvasHeight;
             square.coordinates[11] = square.coordinates[11] - canvasHeight;
         }
+
+        if (square.coordinates[7] > canvasHeight) {
+            square.coordinates[1] = 0;
+            square.coordinates[3] = this.squareSize;
+            square.coordinates[5] = 0;
+            square.coordinates[7] = this.squareSize;
+            square.coordinates[9] = 0;
+            square.coordinates[11] = this.squareSize;
+        }
+
         square.x = square.coordinates[0];
         square.y = square.coordinates[1];
         this.squares[index] = square;
@@ -52,14 +63,16 @@ export class SnakeComponent
         square.coordinates[7] = square.coordinates[7] - this.squareSize;
         square.coordinates[9] = square.coordinates[9] - this.squareSize;
         square.coordinates[11] = square.coordinates[11] - this.squareSize;
+
         if (square.coordinates[1] < 0) {
-            square.coordinates[1] = canvasHeight - square.coordinates[1];
-            square.coordinates[3] = canvasHeight - square.coordinates[3];
-            square.coordinates[5] = canvasHeight - square.coordinates[5];
-            square.coordinates[7] = canvasHeight - square.coordinates[7];
-            square.coordinates[9] = canvasHeight - square.coordinates[9];
-            square.coordinates[11] = canvasHeight - square.coordinates[11];
+            square.coordinates[1] = canvasHeight - this.squareSize;
+            square.coordinates[3] = canvasHeight;
+            square.coordinates[5] = canvasHeight - this.squareSize;
+            square.coordinates[7] = canvasHeight;
+            square.coordinates[9] = canvasHeight - this.squareSize;
+            square.coordinates[11] = canvasHeight;
         }
+        
         square.x = square.coordinates[0];
         square.y = square.coordinates[1];
         this.squares[index] = square;
@@ -75,14 +88,16 @@ export class SnakeComponent
         square.coordinates[6] = square.coordinates[6] + this.squareSize;
         square.coordinates[8] = square.coordinates[8] + this.squareSize;
         square.coordinates[10] = square.coordinates[10] + this.squareSize;
-        if (square.coordinates[8] > canvasWidth) {
-            square.coordinates[0] = square.coordinates[0] - canvasWidth;
-            square.coordinates[2] = square.coordinates[2] - canvasWidth;
-            square.coordinates[4] = square.coordinates[4] - canvasWidth;
-            square.coordinates[6] = square.coordinates[6] - canvasWidth;
-            square.coordinates[8] = square.coordinates[8] - canvasWidth;
-            square.coordinates[10] = square.coordinates[10] - canvasWidth;
+        
+        if (square.coordinates[6] > canvasWidth) {
+            square.coordinates[0] = 0;
+            square.coordinates[2] = 0;
+            square.coordinates[4] = this.squareSize;
+            square.coordinates[6] = this.squareSize;
+            square.coordinates[8] = this.squareSize;
+            square.coordinates[10] = 0;
         }
+
         square.x = square.coordinates[0];
         square.y = square.coordinates[1];
         this.squares[index] = square;
@@ -92,7 +107,7 @@ export class SnakeComponent
     {
         const square = this.squares[index];
         const canvasWidth = this.context.canvas.width;
-\
+
         square.coordinates[0] = square.coordinates[0] - this.squareSize;
         square.coordinates[2] = square.coordinates[2] - this.squareSize;
         square.coordinates[4] = square.coordinates[4] - this.squareSize;
@@ -100,12 +115,12 @@ export class SnakeComponent
         square.coordinates[8] = square.coordinates[8] - this.squareSize;
         square.coordinates[10] = square.coordinates[10] - this.squareSize;
         if (square.coordinates[0] < 0) {
-            square.coordinates[0] = canvasWidth - square.coordinates[0];
-            square.coordinates[2] = canvasWidth - square.coordinates[2];
-            square.coordinates[4] = canvasWidth - square.coordinates[4];
-            square.coordinates[6] = canvasWidth - square.coordinates[6];
-            square.coordinates[8] = canvasWidth - square.coordinates[8];
-            square.coordinates[10] = canvasWidth - square.coordinates[10];
+            square.coordinates[0] = canvasWidth - this.squareSize;
+            square.coordinates[2] = canvasWidth - this.squareSize;
+            square.coordinates[4] = canvasWidth;
+            square.coordinates[6] = canvasWidth;
+            square.coordinates[8] = canvasWidth;
+            square.coordinates[10] = canvasWidth - this.squareSize;
         }
         square.x = square.coordinates[0];
         square.y = square.coordinates[1];
