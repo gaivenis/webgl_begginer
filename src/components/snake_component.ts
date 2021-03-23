@@ -1,3 +1,4 @@
+import { VerticesService } from '../services/vertices_service';
 import { Directions } from './move_component';
 import { SnakeSquareComponent } from './snake_sqaure_component';
 
@@ -23,21 +24,8 @@ export class SnakeComponent
     {
         const square = this.squares[index];
         const canvasHeight = this.context.canvas.height;
-        square.coordinates[1] = square.coordinates[1] + this.squareSize;
-        square.coordinates[3] = square.coordinates[3] + this.squareSize;
-        square.coordinates[5] = square.coordinates[5] + this.squareSize;
-        square.coordinates[7] = square.coordinates[7] + this.squareSize;
-        square.coordinates[9] = square.coordinates[9] + this.squareSize;
-        square.coordinates[11] = square.coordinates[11] + this.squareSize;
 
-        if (square.coordinates[7] > canvasHeight) {
-            square.coordinates[1] = square.coordinates[1] - canvasHeight;
-            square.coordinates[3] = square.coordinates[3] - canvasHeight;
-            square.coordinates[5] = square.coordinates[5] - canvasHeight;
-            square.coordinates[7] = square.coordinates[7] - canvasHeight;
-            square.coordinates[9] = square.coordinates[9] - canvasHeight;
-            square.coordinates[11] = square.coordinates[11] - canvasHeight;
-        }
+        square.coordinates = VerticesService.translate(square.coordinates, 0, this.squareSize);
 
         if (square.coordinates[7] > canvasHeight) {
             square.coordinates[1] = 0;
@@ -57,12 +45,8 @@ export class SnakeComponent
     {
         const square = this.squares[index];
         const canvasHeight = this.context.canvas.height;
-        square.coordinates[1] = square.coordinates[1] - this.squareSize;
-        square.coordinates[3] = square.coordinates[3] - this.squareSize;
-        square.coordinates[5] = square.coordinates[5] - this.squareSize;
-        square.coordinates[7] = square.coordinates[7] - this.squareSize;
-        square.coordinates[9] = square.coordinates[9] - this.squareSize;
-        square.coordinates[11] = square.coordinates[11] - this.squareSize;
+        
+        square.coordinates = VerticesService.translate(square.coordinates, 0, -this.squareSize);
 
         if (square.coordinates[1] < 0) {
             square.coordinates[1] = canvasHeight - this.squareSize;
@@ -82,12 +66,8 @@ export class SnakeComponent
     {
         const square = this.squares[index];
         const canvasWidth = this.context.canvas.width;
-        square.coordinates[0] = square.coordinates[0] + this.squareSize;
-        square.coordinates[2] = square.coordinates[2] + this.squareSize;
-        square.coordinates[4] = square.coordinates[4] + this.squareSize;
-        square.coordinates[6] = square.coordinates[6] + this.squareSize;
-        square.coordinates[8] = square.coordinates[8] + this.squareSize;
-        square.coordinates[10] = square.coordinates[10] + this.squareSize;
+
+        square.coordinates = VerticesService.translate(square.coordinates, this.squareSize, 0);
         
         if (square.coordinates[6] > canvasWidth) {
             square.coordinates[0] = 0;
@@ -108,12 +88,8 @@ export class SnakeComponent
         const square = this.squares[index];
         const canvasWidth = this.context.canvas.width;
 
-        square.coordinates[0] = square.coordinates[0] - this.squareSize;
-        square.coordinates[2] = square.coordinates[2] - this.squareSize;
-        square.coordinates[4] = square.coordinates[4] - this.squareSize;
-        square.coordinates[6] = square.coordinates[6] - this.squareSize;
-        square.coordinates[8] = square.coordinates[8] - this.squareSize;
-        square.coordinates[10] = square.coordinates[10] - this.squareSize;
+        square.coordinates = VerticesService.translate(square.coordinates, -this.squareSize, 0);
+
         if (square.coordinates[0] < 0) {
             square.coordinates[0] = canvasWidth - this.squareSize;
             square.coordinates[2] = canvasWidth - this.squareSize;

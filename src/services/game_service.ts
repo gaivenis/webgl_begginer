@@ -4,6 +4,7 @@ import { Directions, MoveComponent } from './../components/move_component';
 import { AnimationService } from './animation_service';
 import { RenderingService } from './rendering_service';
 import { UtilsService } from './utils_serlvice';
+import { VerticesService } from './vertices_service';
 
 const availableKeys = [
     'ArrowLeft',
@@ -128,7 +129,6 @@ export class GameService
     {
         const x = UtilsService.randomInt(Math.floor(window.innerWidth / 10)) * 10;
         const y = UtilsService.randomInt(Math.floor(window.innerHeight / 10)) * 10;
-        console.log(x, y);
         const vertices = [
             x, y,
             x, y + GameService.snakePartSize,
@@ -145,7 +145,7 @@ export class GameService
     protected _handleMoveBySquare()
     {
         const snakeTarget = new SnakeSquareComponent(this.renderingService.target);
-        if (this.isCollision(this.snake.squares[this.snake.squares.length - 2], [snakeTarget])) {
+        if (this.isCollision(this.snake.squares[this.snake.squares.length - 1], [snakeTarget])) {
             this._handleTargetCollision();
             this.renderingService.target = this._generateTarget();
         }
@@ -173,24 +173,22 @@ export class GameService
     protected _handleTargetCollision()
     {
         const firstSquare = this.snake.squares[0];
-        const coordinates = [...firstSquare.coordinates];
+        let coordinates = [...firstSquare.coordinates];
 
         if (firstSquare.direction === Directions.down) {
-            coordinates[1] = coordinates[1] + GameService.snakePartSize;
-            coordinates[3] = coordinates[3] + GameService.snakePartSize;
-            coordinates[5] = coordinates[5] + GameService.snakePartSize;
-            coordinates[7] = coordinates[7] + GameService.snakePartSize;
-            coordinates[9] = coordinates[9] + GameService.snakePartSize;
-            coordinates[11] = coordinates[11] + GameService.snakePartSize;
+            coordinates = VerticesService.translate(coordinates, 0, GameService.snakePartSize);
         }
 
         if (firstSquare.direction === Directions.up) {
-            coordinates[1] = coordinates[1] - GameService.snakePartSize;
-            coordinates[3] = coordinates[3] - GameService.snakePartSize;
-            coordinates[5] = coordinates[5] - GameService.snakePartSize;
-            coordinates[7] = coordinates[7] - GameService.snakePartSize;
-            coordinates[9] = coordinates[9] - GameService.snakePartSize;
-            coordinates[11] = coordinates[11] - GameService.snakePartSize;
+            coordinates = VerticesService.translate(coordinates, 0, -GameService.snakePartSize);
+        }
+
+        if (firstSquare.direction === Directions.right) {
+            coordinates = VerticesService.translate(coordinates, GameService.snakePartSize, 0);
+        }
+
+        if (firstSquare.direction === Directions.left) {
+            coordinates = VerticesService.translate(coordinates, -GameService.snakePartSize, 0);
         }
 
         this.snake.squares.splice(1, 0, new SnakeSquareComponent(coordinates));
