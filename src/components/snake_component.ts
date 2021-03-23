@@ -28,12 +28,7 @@ export class SnakeComponent
         square.coordinates = VerticesService.translate(square.coordinates, 0, this.squareSize);
 
         if (square.coordinates[7] > canvasHeight) {
-            square.coordinates[1] = 0;
-            square.coordinates[3] = this.squareSize;
-            square.coordinates[5] = 0;
-            square.coordinates[7] = this.squareSize;
-            square.coordinates[9] = 0;
-            square.coordinates[11] = this.squareSize;
+            square.coordinates = VerticesService.translateTo(square.coordinates, square.coordinates[0], 0);
         }
 
         square.x = square.coordinates[0];
@@ -49,12 +44,7 @@ export class SnakeComponent
         square.coordinates = VerticesService.translate(square.coordinates, 0, -this.squareSize);
 
         if (square.coordinates[1] < 0) {
-            square.coordinates[1] = canvasHeight - this.squareSize;
-            square.coordinates[3] = canvasHeight;
-            square.coordinates[5] = canvasHeight - this.squareSize;
-            square.coordinates[7] = canvasHeight;
-            square.coordinates[9] = canvasHeight - this.squareSize;
-            square.coordinates[11] = canvasHeight;
+            square.coordinates = VerticesService.translateTo(square.coordinates, square.coordinates[0], canvasHeight - this.squareSize);
         }
         
         square.x = square.coordinates[0];
@@ -70,12 +60,7 @@ export class SnakeComponent
         square.coordinates = VerticesService.translate(square.coordinates, this.squareSize, 0);
         
         if (square.coordinates[6] > canvasWidth) {
-            square.coordinates[0] = 0;
-            square.coordinates[2] = 0;
-            square.coordinates[4] = this.squareSize;
-            square.coordinates[6] = this.squareSize;
-            square.coordinates[8] = this.squareSize;
-            square.coordinates[10] = 0;
+            square.coordinates = VerticesService.translateTo(square.coordinates, 0, square.coordinates[1]);
         }
 
         square.x = square.coordinates[0];
@@ -91,13 +76,9 @@ export class SnakeComponent
         square.coordinates = VerticesService.translate(square.coordinates, -this.squareSize, 0);
 
         if (square.coordinates[0] < 0) {
-            square.coordinates[0] = canvasWidth - this.squareSize;
-            square.coordinates[2] = canvasWidth - this.squareSize;
-            square.coordinates[4] = canvasWidth;
-            square.coordinates[6] = canvasWidth;
-            square.coordinates[8] = canvasWidth;
-            square.coordinates[10] = canvasWidth - this.squareSize;
+            square.coordinates = VerticesService.translateTo(square.coordinates, canvasWidth - this.squareSize, square.coordinates[1])
         }
+
         square.x = square.coordinates[0];
         square.y = square.coordinates[1];
         this.squares[index] = square;
