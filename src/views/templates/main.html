@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="./assets/styles.css">
 </head>
 <body>
-    <canvas id="glCanvas" width="640" height="480"></canvas>
+    <div class="canvas-container">
+        <div class="vertical-aligner"></div><canvas id="glCanvas" width="640" height="480"></canvas>
+    </div><div class="sidebar">
+        <div class="score-title">Score</div>
+        <div class="score" id="totalScore">0</div>
+    </div>
     <div id="modal" style="display: none;" class="modal">
         <div class="modal-cover"></div>
         <div class="dt modal-table">

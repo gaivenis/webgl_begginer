@@ -35,15 +35,10 @@ export class RenderingService
         this.draw();
     }
 
-    setDirection()
-    {
-
-    }
-
     draw()
     {
         const { context, programComponent } = this;
-        context.clearColor(0, 0, 0, 0);
+        context.clearColor(0.4, 1.0, 0.7, 1);
         context.clear(context.COLOR_BUFFER_BIT);
         context.useProgram(programComponent.program);
         const location = context.getUniformLocation(programComponent.program, 'u_resolution');
@@ -56,11 +51,11 @@ export class RenderingService
         }
 
         programComponent.setAttribute('a_position', coordinates);
-        context.uniform4f(colorLocation, 0.5, 0.5, 0.5, 1);
+        context.uniform4f(colorLocation, 0.860, 0.846, 0.00, 1);
         context.drawArrays(context.TRIANGLES, 0, 6 * this.snake.squares.length);
 
         programComponent.setAttribute('a_position', this.target);
-        context.uniform4f(colorLocation, 0.2, 0.5, 0.7, 1);
+        context.uniform4f(colorLocation, 0.640, 0.00, 0.00, 1);
         context.drawArrays(context.TRIANGLES, 0, 6);
     }
 

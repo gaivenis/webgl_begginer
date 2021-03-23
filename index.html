@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rookie WebGL</title>
     <link rel="stylesheet" href="./assets/styles.css">
-<script defer src="./assets/build/runtime.a1a4ef3ddbdde6c8462f.js"></script><script defer src="./assets/build/main.fb1773fe358c2653fda3.js"></script></head>
+<script defer src="./assets/build/runtime.a1a4ef3ddbdde6c8462f.js"></script><script defer src="./assets/build/main.add2189b343959f94711.js"></script></head>
 <body>
-    <canvas id="glCanvas" width="640" height="480"></canvas>
+    <div class="canvas-container">
+        <div class="vertical-aligner"></div><canvas id="glCanvas" width="640" height="480"></canvas>
+    </div><div class="sidebar">
+        <div class="score-title">Score</div>
+        <div class="score" id="totalScore">0</div>
+    </div>
     <div id="modal" style="display: none;" class="modal">
         <div class="modal-cover"></div>
         <div class="dt modal-table">

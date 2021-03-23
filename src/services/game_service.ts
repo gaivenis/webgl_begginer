@@ -13,12 +13,13 @@ const availableKeys = [
     'ArrowUp'
 ];
 
-type Coordinates = number[];
-
 export class GameService
 {
     static readonly snakeLength: number = 10;
     static readonly snakePartSize: number = 10.0;
+    static readonly defaultScorePoint: number = 5;
+    static readonly scoreBoard: HTMLElement = document.getElementById('totalScore')!;
+    protected _scoreTotal: number = 0;
 
     movesList: MoveComponent[] = [];
     snake: SnakeComponent;
@@ -33,7 +34,6 @@ export class GameService
         this.renderingService = renderingService;
         this.snake = snake;
         this.context = context;
-        this._initGameSize();
         this.currentDirection = this.snake.direction;
         this.renderingService.target = this._generateTarget();
         this._bindEvents();
@@ -66,25 +66,8 @@ export class GameService
         return false;
     }
 
-    protected _initGameSize()
-    {
-        const canvas = <HTMLCanvasElement>this.context.canvas;
-        const resizeObserver = new ResizeObserver(() => {
-            canvas.width = Math.floor(window.innerWidth / 10) * 10;
-            canvas.height = Math.floor(window.innerHeight / 10) * 10;
-            this.context?.viewport(0, 0, canvas.width, canvas.height);
-        });
-
-        try {
-            resizeObserver.observe(canvas, {box: 'device-pixel-content-box'});
-        } catch (ex) {
-            resizeObserver.observe(canvas, {box: 'content-box'});
-        }
-    }
-
     protected _bindEvents()
     {
-        
         window.addEventListener('keydown', (e: KeyboardEvent) => {
             if (availableKeys.includes(e.key)) {
                 if (this.isMoveAvailable) {
@@ -127,8 +110,8 @@ export class GameService
 
     protected _generateTarget()
     {
-        const x = UtilsService.randomInt(Math.floor(window.innerWidth / 10)) * 10;
-        const y = UtilsService.randomInt(Math.floor(window.innerHeight / 10)) * 10;
+        const x = UtilsService.randomInt(Math.floor(this.context.canvas.width / 10)) * 10;
+        const y = UtilsService.randomInt(Math.floor(this.context.canvas.height / 10)) * 10;
         const vertices = [
             x, y,
             x, y + GameService.snakePartSize,
@@ -142,11 +125,18 @@ export class GameService
         return vertices;
     }
 
+    protected _setTotalScore()
+    {
+        this._scoreTotal += GameService.defaultScorePoint;
+        GameService.scoreBoard.innerText = this._scoreTotal.toString();
+    }
+
     protected _handleMoveBySquare()
     {
         const snakeTarget = new SnakeSquareComponent(this.renderingService.target);
         if (this.isCollision(this.snake.squares[this.snake.squares.length - 1], [snakeTarget])) {
             this._handleTargetCollision();
+            this._setTotalScore();
             this.renderingService.target = this._generateTarget();
         }
 
@@ -235,10 +225,5 @@ export class GameService
                 this.renderingService.target = this._generateTarget();
             }
         }
-    }
-
-    createApple()
-    {
-        
     }
 }

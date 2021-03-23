@@ -7,11 +7,11 @@
 html, body {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 canvas {
     background-color: aqua;
-    margin: auto;
     display: block;
 }
 
@@ -107,3 +107,37 @@ canvas {
     border-radius: 6px;
     cursor: pointer;
 }
+
+.canvas-container, .sidebar {
+    height: 100%;
+    background-color: black;
+    display: inline-block;
+    padding: 0px;
+    vertical-align: top;
+}
+
+.canvas-container canvas {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.vertical-aligner {
+    width: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.sidebar {
+    width: 200px;
+}
+
+.score, .score-title {
+    color: #fff;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
