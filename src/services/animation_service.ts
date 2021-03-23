@@ -28,10 +28,10 @@ export class AnimationService
         }
                 
         window.requestAnimationFrame(() => {
-            this.renderingService.draw();
             this.animate();
         });
      
+        this.renderingService.draw();
 
         const nowTime = Date.now();
         const elapsed = nowTime - this.startTime;

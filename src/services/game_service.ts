@@ -17,7 +17,7 @@ type Coordinates = number[];
 
 export class GameService
 {
-    static readonly snakeLength: number = 3;
+    static readonly snakeLength: number = 10;
     static readonly snakePartSize: number = 10.0;
 
     movesList: MoveComponent[] = [];
